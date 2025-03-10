@@ -1,0 +1,20 @@
+-- Ver ruta y camión vacío
+rutaEjemplo
+camionEjemplo
+
+-- Ver camión con carga
+camionCargado
+freeCellsT camionCargado  -- Debe mostrar menos espacios disponibles
+netT camionCargado        -- Debe mostrar la suma de los pesos (3+4+2+5 = 14)
+
+-- Descargar en la ciudad "A" (Debe remover el palet con destino "A")
+camionDespuesA
+netT camionDespuesA       -- Debe ser 11 (14 - 3)
+
+-- Descargar en la ciudad "B" (Debe remover los palets con destino "B")
+camionDespuesB
+netT camionDespuesB       -- Debe ser 2 (11 - 4 - 5)
+
+-- Ver espacios libres después de la entrega
+espaciosAntes  -- Debe ser menor que espaciosDespues
+espaciosDespues
