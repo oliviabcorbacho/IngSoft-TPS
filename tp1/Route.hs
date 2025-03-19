@@ -1,5 +1,5 @@
 --Codigo dado por emilio
-module Route ( Route, newR, inOrderR, inRouteR, getCities)
+module Route ( Route, newR, inOrderR, inRouteR)
    where
 
 data Route = Rou [ String ] deriving (Eq, Show)
@@ -17,11 +17,10 @@ before c1 c2 (c:cities)
 
 
 inOrderR :: Route -> String -> String -> Bool -- indica si la primer ciudad consultada está antes que la segunda ciudad en la ruta
-inOrderR (Rou cities) c1 c2 = before c1 c2 cities
+inOrderR (Rou []) _ _ = False
+inOrderR (Rou cities) c1 c2 | c1 == c2 = True
+                            | otherwise = before c1 c2 cities
 
 inRouteR :: Route -> String -> Bool -- indica si la ciudad consultada está en la ruta
 inRouteR (Rou []) c = False
 inRouteR (Rou cities) c  = elem c cities
-
-getCities :: Route -> [String]
-getCities (Rou cities) = cities
