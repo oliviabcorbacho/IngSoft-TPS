@@ -8,7 +8,8 @@ import Distribution.Parsec (parsecLeadingOptCommaList)
 data Stack = Sta [ Palet ] Int deriving (Eq, Show)
 
 newS :: Int -> Stack                      -- construye una Pila con la capacidad indicada 
-newS capacidad = Sta [] capacidad
+newS capacidad  | capacidad <= 0 = error "La capacidad debe ser mayor a 0"
+                | otherwise = Sta [] capacidad
 
 freeCellsS :: Stack -> Int                -- responde la celdas disponibles en la pila
 freeCellsS (Sta palets capacidad) = capacidad - length palets
@@ -19,8 +20,6 @@ stackS (Sta palets capacidad) p = Sta ( p: palets ) capacidad
 netS :: Stack -> Int                      -- responde el peso neto de los paletes en la pila
 netS (Sta [] capacidad) = 0
 netS (Sta (p:palets) capacidad) = netP p + netS (Sta palets capacidad)
-
-
 
 holdsS :: Stack -> Palet -> Route -> Bool -- indica si la pila puede aceptar el palet considerando las ciudades en la ruta
 holdsS (Sta [] capacidad) p ruta = True -- si la pila esta vacia True
