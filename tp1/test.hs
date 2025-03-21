@@ -125,7 +125,11 @@ test_truck = [
 
     testF (unloadT truck1 ba), -- camion vacio
     testF (unloadT truck11 ba), -- destino descargable
-    testF (unloadT truck222 ba) -- destino no descargable
+    testF (unloadT truck222 ba), -- destino no descargable
+
+    not(netT truck1 == 0),
+    not(netT truck_full == 2),
+    not(netT truck222 == 8)
     ]
 
 
