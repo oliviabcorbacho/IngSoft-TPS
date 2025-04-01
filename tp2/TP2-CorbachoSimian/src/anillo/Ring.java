@@ -1,23 +1,3 @@
-//package anillo;
-//
-//public class Ring {
-//    public Ring next() {
-//        return null;
-//    }
-//
-//    public Object current() {
-//        return null;
-//    }
-//
-//    public Ring add( Object cargo ) {
-//        return null;
-//    }
-//
-//    public Ring remove() {
-//        return null;
-//    }
-//}
-
 package anillo;
 
 public class Ring {
@@ -27,7 +7,7 @@ public class Ring {
 
         Node(Object cargo) {
             this.cargo = cargo;
-            this.next = this; // Initially points to itself (circular)
+            this.next = this;
         }
     }
 
@@ -35,7 +15,7 @@ public class Ring {
 
     public Ring next() {
         if (current == null) {
-            throw new IllegalStateException("Ring is empty");
+            throw new RuntimeException("Ring is empty");
         }
         current = current.next;
         return this;
@@ -43,7 +23,7 @@ public class Ring {
 
     public Object current() {
         if (current == null) {
-            throw new IllegalStateException("Ring is empty");
+            throw new RuntimeException("Ring is empty");
         }
         return current.cargo;
     }
@@ -53,16 +33,20 @@ public class Ring {
         if (current == null) {
             current = newNode;
         } else {
-            newNode.next = current.next;
-            current.next = newNode;
-            current = newNode; // Move to the new node
+            newNode.next = current;
+            Node aux = current;
+            while (aux.next != current) { //osea meto el nodo nuevo atras del curr
+                aux = aux.next;
+            }
+            aux.next = newNode;
+            current = newNode; // ajusto el curr
         }
         return this;
     }
 
     public Ring remove() {
         if (current == null) {
-            throw new IllegalStateException("Ring is empty");
+            throw new RuntimeException("Ring is empty");
         }
 
         if (current.next == current) { // Only one element
