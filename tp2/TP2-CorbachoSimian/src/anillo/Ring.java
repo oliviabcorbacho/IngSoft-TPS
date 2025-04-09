@@ -5,20 +5,22 @@ import java.util.Stack;
 public class Ring {
 
     private Node current = new EmptyNode();
-    private Stack<Node> pila = new Stack<>();
+    private static Stack<NodeFunction> pila = new Stack<>();
 
-    private Node lastPop (Node n){
+    private static Node lastPop (Node n){
         return new EmptyNode();
     }
 
-    private Node regPop (Node actualNode){
+
+    private static Node regPop (Node actualNode){
         Node aux = actualNode;
         while (((MultiNode) actualNode).next != aux) {
             actualNode = ((MultiNode) actualNode).next;
         }
         ((MultiNode) actualNode).next = aux.next();
-        return aux;
+        return actualNode.next();
     }
+
 
     private abstract static class Node {
         abstract Node add(Object cargo);
@@ -27,10 +29,19 @@ public class Ring {
         abstract Object current();
     }
 
-    private static class EmptyNode extends Node { //NULL OBJECT PATTERN
+    private interface NodeFunction {
+        Node apply(Node node);
+    }
+
+    private static class EmptyNode extends Node {
         Node add(Object cargo) {
             MultiNode curr =  new MultiNode(cargo);
             curr.next = curr;
+
+            pila.push((Node node) -> {
+                return lastPop(node);
+            });
+
             return curr;
         }
         Node remove() {
@@ -62,18 +73,19 @@ public class Ring {
                 prev = ((MultiNode) prev).next;
             }
             ((MultiNode) prev).next = newNode;
+
+            pila.push((Node node) -> {
+                return regPop(node);
+            });
+
             return newNode;
         }
 
         Node remove() {
             Node actualNode = this;
-            void callFunc = pila.pop();
-            return callFunc(actualNode);
-//            if (next == actualNode) {
-//                return new SingleNode(((MultiNode) next).cargo);
-//            } else {
-//                return next;
-//            }
+            NodeFunction func = pila.pop();
+            return func.apply(this);
+
         }
         Node next() {
             return next;
@@ -102,8 +114,3 @@ public class Ring {
         return this;
     }
 }
-
-//IDEA PARA DELETE
-// anillo.cant_elementos = []
-// nodo.add --> anillo.cant_elementos.append(1)
-//nodo.rmv --> while anillo.cant_elementos not empty: tengo caso de muchos anillos. OTHERWISE NULL CASE
