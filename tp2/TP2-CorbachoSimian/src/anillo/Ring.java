@@ -1,6 +1,24 @@
 package anillo;
 
+import java.util.Stack;
+
 public class Ring {
+
+    private Node current = new EmptyNode();
+    private Stack<Node> pila = new Stack<>();
+
+    private Node lastPop (Node n){
+        return new EmptyNode();
+    }
+
+    private Node regPop (Node actualNode){
+        Node aux = actualNode;
+        while (((MultiNode) actualNode).next != aux) {
+            actualNode = ((MultiNode) actualNode).next;
+        }
+        ((MultiNode) actualNode).next = aux.next();
+        return aux;
+    }
 
     private abstract static class Node {
         abstract Node add(Object cargo);
@@ -11,7 +29,9 @@ public class Ring {
 
     private static class EmptyNode extends Node { //NULL OBJECT PATTERN
         Node add(Object cargo) {
-            return new SingleNode(cargo);
+            MultiNode curr =  new MultiNode(cargo);
+            curr.next = curr;
+            return curr;
         }
         Node remove() {
             throw new RuntimeException("Ring is empty");
@@ -24,32 +44,6 @@ public class Ring {
         }
     }
 
-    //JAJA EMILIO DIJO QUE ESTO NO ES VALIDO, tengo que hacer que singleNode y multiNode sean la misma clase
-    //Resuelvo estableciendo el elemento NEUTRO
-    private static class SingleNode extends Node {
-        private  Object cargo;
-
-        SingleNode(Object cargo) {
-            this.cargo = cargo;
-        }
-
-        Node add(Object cargo) {
-            MultiNode first = new MultiNode(cargo);
-            MultiNode second = new MultiNode(this.cargo);
-            first.next = second;
-            second.next = first;
-            return first;
-        }
-        Node remove() {
-            return new EmptyNode();
-        }
-        Node next() {
-            return this;
-        }
-        Object current() {
-            return cargo;
-        }
-    }
 
     private static class MultiNode extends Node {
         private Object cargo;
@@ -72,17 +66,14 @@ public class Ring {
         }
 
         Node remove() {
-            Node prev = this;
-            while (((MultiNode) prev).next != this) {
-                prev = ((MultiNode) prev).next;
-            }
-            ((MultiNode) prev).next = next;
-
-            if (next == prev) {
-                return new SingleNode(((MultiNode) next).cargo);
-            } else {
-                return next;
-            }
+            Node actualNode = this;
+            void callFunc = pila.pop();
+            return callFunc(actualNode);
+//            if (next == actualNode) {
+//                return new SingleNode(((MultiNode) next).cargo);
+//            } else {
+//                return next;
+//            }
         }
         Node next() {
             return next;
@@ -91,8 +82,6 @@ public class Ring {
             return cargo;
         }
     }
-
-    private Node current = new EmptyNode();
 
     public Ring next() {
         current = current.next();
