@@ -113,3 +113,8 @@ public class Ring {
         return this;
     }
 }
+
+//IDEA PARA DELETE
+// anillo.cant_elementos = []
+// nodo.add --> anillo.cant_elementos.append(1)
+//nodo.rmv --> while anillo.cant_elementos not empty: tengo caso de muchos anillos. OTHERWISE NULL CASE
