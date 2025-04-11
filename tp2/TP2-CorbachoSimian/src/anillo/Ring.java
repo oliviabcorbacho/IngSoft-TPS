@@ -7,20 +7,6 @@ public class Ring {
     private Node current = new EmptyNode();
     private static Stack<NodeFunction> pila = new Stack<>();
 
-    private static Node lastPop (Node n){
-        return new EmptyNode();
-    }
-
-
-    private static Node regPop (Node actualNode){
-        Node aux = actualNode;
-        while (((MultiNode) actualNode).next != aux) {
-            actualNode = ((MultiNode) actualNode).next;
-        }
-        ((MultiNode) actualNode).next = aux.next();
-        return actualNode.next();
-    }
-
 
     private abstract static class Node {
         abstract Node add(Object cargo);
@@ -29,18 +15,31 @@ public class Ring {
         abstract Object current();
     }
 
-    private interface NodeFunction {
-        Node apply(Node node);
+    private abstract static class NodeFunction {
+        abstract Node apply(Node node);
+    }
+    private static class FinalFunction extends NodeFunction {
+        Node apply(Node node) {
+            return new EmptyNode();
+        }
+    }
+    private static class RegularFunction extends NodeFunction {
+        Node apply(Node node) {
+            Node aux = node;
+            while (((MultiNode) node).next != aux) {
+                node = ((MultiNode) node).next;
+            }
+            ((MultiNode) node).next = aux.next();
+            return node.next();
+        }
     }
 
     private static class EmptyNode extends Node {
         Node add(Object cargo) {
             MultiNode curr =  new MultiNode(cargo);
             curr.next = curr;
-
-            pila.push((Node node) -> {
-                return lastPop(node);
-            });
+            NodeFunction f = new FinalFunction();
+            pila.push(f);
 
             return curr;
         }
@@ -74,9 +73,9 @@ public class Ring {
             }
             ((MultiNode) prev).next = newNode;
 
-            pila.push((Node node) -> {
-                return regPop(node);
-            });
+            NodeFunction f = new RegularFunction();
+
+            pila.push(f);
 
             return newNode;
         }
