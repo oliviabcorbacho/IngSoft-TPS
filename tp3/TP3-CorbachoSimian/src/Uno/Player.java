@@ -7,22 +7,26 @@ import java.util.stream.Collectors;
 
 public class Player {
     private String name;
-    private List<Card> hand = new ArrayList<>();
+    private List<Card> hand;
+    public Player nextPlayer;
+    public Player prevPlayer;
 
-    public Player(String name) {
+    public Player(String name, List<Card> hand) {
         this.name = name;
+        this.hand = hand;
     }
 
     public String getName() {
         return name;
     }
 
-    public void drawCards(int count) {
-        for (int i = 0; i < count; i++) {
-            // Aquí se añadirían cartas desde el mazo
-            hand.add(Game.deck.remove(0)) //Simpondremos exception manager ideal
-        }
+    public int getHandSize(){ return hand.size(); }
+
+    public void drawCards(int amount){
+
     }
 
-    public Card playCard(Card topCard) {
-        // Busca una carta jugable en la mano
+    public void setNextPlayer(Player nextPlayer){ this.nextPlayer = nextPlayer; }
+    public void setPrevPlayer(Player prevPlayer){ this.prevPlayer = prevPlayer; }
+
+}

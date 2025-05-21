@@ -2,15 +2,17 @@ package Uno;
 
 public class WildCard extends Card {
     public WildCard() {
-        super("WILD");
+        super("WILD", "WILD");
     }
 
-    @Override
+    public void setColor(String color){ this.color = color; }
+
     public void applyEffect(Game game) {
-        // Determinísticamente elegimos el color más frecuente en la mano del jugador actual
-        String chosen = game.getCurrentPlayer().mostFrequentColor();
-        this.color = chosen;
-        game.advanceTurn();
+        game.orchestrator.next();
+    }
+
+    public boolean isPlayableOn(Card topCard) {
+        return true;
     }
 }
 
