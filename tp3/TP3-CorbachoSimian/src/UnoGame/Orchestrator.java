@@ -14,7 +14,7 @@ public class Orchestrator {
 
     public void next() {
         current = reversed ? current.prev : current.next;
-    }
+    } //cambiar por dos orchestrators
 
     public void reverse() {
         reversed = !reversed;

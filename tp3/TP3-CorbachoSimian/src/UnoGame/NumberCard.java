@@ -14,7 +14,7 @@ public class NumberCard extends Card {
 
     @Override
     public boolean canBePlayedOn(Card topCard) {
-        return topCard instanceof NumberCard && ((NumberCard) topCard).number == this.number
+        return ((NumberCard) topCard).number == this.number
                 || topCard.getColor().equals(this.color);
     }
 

@@ -1,7 +1,7 @@
 package UnoGame;
 
 public class WildCard extends Card {
-    private String chosenColor = null;
+    private String chosenColor = "Wild";
 
     public WildCard() {
         super("Wild");
@@ -13,7 +13,7 @@ public class WildCard extends Card {
 
     @Override
     public String getColor() {
-        return chosenColor != null ? chosenColor : "Wild";
+        return chosenColor;
     }
 
     @Override

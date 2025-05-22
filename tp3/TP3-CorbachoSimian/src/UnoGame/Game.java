@@ -13,12 +13,12 @@ public class Game {
             Player prev = players.get(players.size() - 2);
             prev.next = player;
             player.prev = prev;
-            player.next = players.get(0);
-            players.get(0).prev = player;
+            player.next = players.getFirst();
+            players.getFirst().prev = player;
         }
         // Inicializa el orquestador solo una vez, cuando hay al menos dos jugadores
         if (orchestrator == null && players.size() > 1) {
-            orchestrator = new Orchestrator(players.get(0));
+            orchestrator = new Orchestrator(players.getFirst());
         }
     }
 
@@ -28,7 +28,7 @@ public class Game {
 
     private void ensureOrchestrator() {
         if (orchestrator == null && !players.isEmpty()) {
-            orchestrator = new Orchestrator(players.get(0));
+            orchestrator = new Orchestrator(players.getFirst());
         }
     }
 
