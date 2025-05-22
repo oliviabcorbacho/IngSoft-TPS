@@ -12,7 +12,7 @@ public class ReverseCard extends Card {
 
     @Override
     public void applyEffect(Game game, Player player) {
-        game.getOrchestrator().reverse();
+        game.reverseOrchestrator();
         game.getOrchestrator().next();
     }
 }

@@ -1,26 +1,26 @@
 package UnoGame;
 
-public class Orchestrator {
-    private Player current;
-    private boolean reversed = false;
+public abstract class Orchestrator {
+    protected Player current;
+    protected Orchestrator other;
 
     public Orchestrator(Player first) {
         this.current = first;
+    }
+
+    public void setOther(Orchestrator other) {
+        this.other = other;
     }
 
     public Player getCurrent() {
         return current;
     }
 
-    public void next() {
-        current = reversed ? current.prev : current.next;
-    } //cambiar por dos orchestrators
+    public abstract void next();
 
-    public void reverse() {
-        reversed = !reversed;
+    public Orchestrator reverse() {
+        return other;
     }
 
-    public boolean isReversed() {
-        return reversed;
-    }
+    public abstract boolean isReversed();
 }

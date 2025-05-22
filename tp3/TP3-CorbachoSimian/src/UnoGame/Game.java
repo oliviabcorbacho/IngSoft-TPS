@@ -16,9 +16,13 @@ public class Game {
             player.next = players.getFirst();
             players.getFirst().prev = player;
         }
-        // Inicializa el orquestador solo una vez, cuando hay al menos dos jugadores
+        // Inicializa ambos orquestadores solo una vez, cuando hay al menos dos jugadores
         if (orchestrator == null && players.size() > 1) {
-            orchestrator = new Orchestrator(players.getFirst());
+            Orchestrator right = new RightOrchestrator(players.getFirst());
+            Orchestrator left = new LeftOrchestrator(players.getFirst());
+            right.setOther(left);
+            left.setOther(right);
+            orchestrator = right;
         }
     }
 
@@ -27,8 +31,12 @@ public class Game {
     }
 
     private void ensureOrchestrator() {
-        if (orchestrator == null && !players.isEmpty()) {
-            orchestrator = new Orchestrator(players.getFirst());
+        if (orchestrator == null && !players.isEmpty() && players.size() > 1) {
+            Orchestrator right = new RightOrchestrator(players.getFirst());
+            Orchestrator left = new LeftOrchestrator(players.getFirst());
+            right.setOther(left);
+            left.setOther(right);
+            orchestrator = right;
         }
     }
 
@@ -59,6 +67,11 @@ public class Game {
     public Player currentPlayer() {
         ensureOrchestrator();
         return orchestrator.getCurrent();
+    }
+
+    public void reverseOrchestrator() {
+        ensureOrchestrator();
+        orchestrator = orchestrator.reverse();
     }
 
     public boolean isDirectionReversed() {
