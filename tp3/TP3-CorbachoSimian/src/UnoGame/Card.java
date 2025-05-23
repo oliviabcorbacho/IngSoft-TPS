@@ -21,3 +21,4 @@ public abstract class Card {
 
     public abstract void applyEffect(Game game, Player player);
 }
+

@@ -188,3 +188,6 @@ class GameTest {
         assertEquals(player3, player1.prev);
     }
 }
+
+//AGREGAR TESTS CON RONDAS MAS COMPLETAS
+// SIMULAR UNA JUGADA ENTERA CON DOS LOOPS

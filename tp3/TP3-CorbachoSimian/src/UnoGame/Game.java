@@ -80,25 +80,4 @@ public class Game {
         ensureOrchestrator();
         return orchestrator;
     }
-    
-    public void drawAndTryPlay(Player player) {
-        ensureOrchestrator();
-        Optional<Card> playable = player.getHand().stream()
-                .filter(card -> canPlay(player, card))
-                .findFirst();
-
-        if (playable.isPresent()) {
-            playCard(player, playable.get());
-            return;
-        }
-
-        Card drawn = drawCard();
-        player.giveCard(drawn);
-
-        if (canPlay(player, drawn)) {
-            playCard(player, drawn);
-        } else {
-            orchestrator.next();
-        }
-    }
 }
