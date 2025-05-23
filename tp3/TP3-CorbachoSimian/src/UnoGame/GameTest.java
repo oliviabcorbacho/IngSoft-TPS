@@ -108,10 +108,9 @@ class GameTest {
         player2.giveCard(redFive);
         game.setTopCard(blueFive);
 
-        // player2 tries to play out of turn
         game.playCard(player2, redFive);
 
-        assertTrue(player2.handSize() == 3); // Debe tener la carta devuelta + 2 más
+        assertTrue(player2.handSize() == 3); 
     }
 
     @Test
@@ -123,7 +122,7 @@ class GameTest {
 
         game.sayUno(player1);
 
-        assertEquals(4, player1.handSize()); // Debe tener 2 cartas más
+        assertEquals(4, player1.handSize()); 
     }
 
     @Test
@@ -150,7 +149,6 @@ class GameTest {
         assertTrue(game.canPlay(player3, plusTwo2));
     }
 
-    // aca hay que hacer cambios porque tiene que agarrar una carta y ver si puede jugar
     @Test
     void testPlayerCannotPlayIfNoMatchingCard() {
         Card redFive = new NumberCard("Red", 5);
@@ -189,27 +187,4 @@ class GameTest {
         assertEquals(player1, player3.next);
         assertEquals(player3, player1.prev);
     }
-
-//    @Test
-//    void testSkipOnLastPlayerGoesToFirst() {
-//        Card skip = new SkipCard("Red");
-//        Card redFive = new NumberCard("Red", 5);
-//        player3.giveCard(skip);
-//        game.setTopCard(redFive);
-//
-//        // Asegurar que todos tengan al menos una carta para evitar IndexOutOfBoundsException
-//        if (player1.handSize() == 0) player1.giveCard(new NumberCard("Blue", 1));
-//        if (player2.handSize() == 0) player2.giveCard(new NumberCard("Green", 2));
-//
-//        // Forzar el turno a player3
-//        while (game.currentPlayer() != player3) {
-//            Player current = game.currentPlayer();
-//            Card card = current.getHand().get(0);
-//            game.playCard(current, card);
-//        }
-//
-//        game.playCard(player3, skip);
-//
-//        assertEquals(player2, game.currentPlayer());
-//    }
 }

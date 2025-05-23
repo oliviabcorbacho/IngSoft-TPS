@@ -7,15 +7,40 @@ public class PlusTwoCard extends Card {
 
     @Override
     public boolean canBePlayedOn(Card topCard) {
-        return topCard.getColor().equals(this.color) || topCard instanceof PlusTwoCard;
+        return topCard.acceptsPlayedCard(this);
+    }
+
+    @Override
+    protected boolean acceptsPlayedCard(NumberCard playedCard) {
+        return playedCard.getColor().equals(this.color);
+    }
+
+    @Override
+    protected boolean acceptsPlayedCard(SkipCard playedCard) {
+        return playedCard.getColor().equals(this.color);
+    }
+
+    @Override
+    protected boolean acceptsPlayedCard(ReverseCard playedCard) {
+        return playedCard.getColor().equals(this.color);
+    }
+
+    @Override
+    protected boolean acceptsPlayedCard(PlusTwoCard playedCard) {
+        return playedCard.getColor().equals(this.color) || playedCard instanceof PlusTwoCard;
+    }
+
+    @Override
+    protected boolean acceptsPlayedCard(WildCard playedCard) {
+        return true;
     }
 
     @Override
     public void applyEffect(Game game, Player player) {
-        Player next = game.getOrchestrator().getCurrent().next;
-        next.giveCard(game.drawCard());
-        next.giveCard(game.drawCard());
-        game.getOrchestrator().next(); // skip next player
+        game.getOrchestrator().next(); 
+        Player targetPlayer = game.getOrchestrator().getCurrent();
+        targetPlayer.giveCard(game.drawCard());
+        targetPlayer.giveCard(game.drawCard());
         game.getOrchestrator().next();
     }
 }

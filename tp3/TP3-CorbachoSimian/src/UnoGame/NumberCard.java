@@ -14,13 +14,36 @@ public class NumberCard extends Card {
 
     @Override
     public boolean canBePlayedOn(Card topCard) {
-        return ((NumberCard) topCard).number == this.number
-                || topCard.getColor().equals(this.color);
+        return topCard.acceptsPlayedCard(this);
+    }
+
+    @Override
+    protected boolean acceptsPlayedCard(NumberCard playedCard) {
+        return playedCard.getColor().equals(this.color) || playedCard.getNumber() == this.number;
+    }
+
+    @Override
+    protected boolean acceptsPlayedCard(SkipCard playedCard) {
+        return playedCard.getColor().equals(this.color);
+    }
+
+    @Override
+    protected boolean acceptsPlayedCard(ReverseCard playedCard) {
+        return playedCard.getColor().equals(this.color);
+    }
+
+    @Override
+    protected boolean acceptsPlayedCard(PlusTwoCard playedCard) {
+        return playedCard.getColor().equals(this.color);
+    }
+
+    @Override
+    protected boolean acceptsPlayedCard(WildCard playedCard) {
+        return true;
     }
 
     @Override
     public void applyEffect(Game game, Player player) {
-        // No tiene efecto especial, solo avanza el turno
         game.getOrchestrator().next();
     }
 }
