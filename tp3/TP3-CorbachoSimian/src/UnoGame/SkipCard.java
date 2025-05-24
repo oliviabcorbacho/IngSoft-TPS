@@ -17,7 +17,7 @@ public class SkipCard extends Card {
 
     @Override
     protected boolean acceptsPlayedCard(SkipCard playedCard) {
-        return playedCard.getColor().equals(this.color) || playedCard instanceof SkipCard;
+        return true;
     }
 
     @Override

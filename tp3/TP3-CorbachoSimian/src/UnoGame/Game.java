@@ -6,6 +6,8 @@ public class Game {
     private final List<Player> players = new ArrayList<>();
     private Orchestrator orchestrator;
     private Card topCard;
+    public GameStatus gameStatus = new GameOn();
+    public Player winner;
 
     public void addPlayer(Player player) {
         players.add(player);
@@ -39,6 +41,7 @@ public class Game {
     }
 
     public void playCard(Player player, Card card) {
+        gameStatus.isOver();
         ensureOrchestrator();
         if (orchestrator.getCurrent() != player || !card.canBePlayedOn(topCard)) {
             player.giveCard(drawCard());
@@ -79,5 +82,18 @@ public class Game {
     public Orchestrator getOrchestrator() {
         ensureOrchestrator();
         return orchestrator;
+    }
+
+    public void endGame(Player winner) {
+        this.gameStatus = new GameOver();
+        this.winner = winner;
+    }
+
+    public Player getWinner() {
+        return winner;
+    }
+
+    public Card getTopCard() {
+        return topCard;
     }
 }

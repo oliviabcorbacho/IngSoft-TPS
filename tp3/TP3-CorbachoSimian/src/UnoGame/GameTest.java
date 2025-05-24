@@ -110,7 +110,7 @@ class GameTest {
 
         game.playCard(player2, redFive);
 
-        assertTrue(player2.handSize() == 3); 
+        assertEquals(3, player2.handSize());
     }
 
     @Test
@@ -122,7 +122,7 @@ class GameTest {
 
         game.sayUno(player1);
 
-        assertEquals(4, player1.handSize()); 
+        assertEquals(4, player1.handSize());
     }
 
     @Test
@@ -187,7 +187,69 @@ class GameTest {
         assertEquals(player1, player3.next);
         assertEquals(player3, player1.prev);
     }
-}
 
-//AGREGAR TESTS CON RONDAS MAS COMPLETAS
-// SIMULAR UNA JUGADA ENTERA CON DOS LOOPS
+    @Test
+    void testFullRoundOfPlayWithThreePlayersAndNoWinner() {
+        Card red1 = new NumberCard("Red", 1);
+        Card red3_p1 = new NumberCard("Red", 3);
+        Card yellow3_p1 = new NumberCard("Yellow", 3); // P1's second card
+        Card blue3_p2 = new NumberCard("Blue", 3);
+        Card green3_p2 = new NumberCard("Green", 3);   // P2's second card
+        Card blue5_p3 = new NumberCard("Blue", 5);
+        Card yellow5_p3 = new NumberCard("Yellow", 5); // P3's second card
+
+        player1.giveCard(red3_p1);
+        player1.giveCard(yellow3_p1);
+        player2.giveCard(blue3_p2);
+        player2.giveCard(green3_p2);
+        player3.giveCard(blue5_p3);
+        player3.giveCard(yellow5_p3);
+        game.setTopCard(red1);
+
+        assertDoesNotThrow(() -> game.playCard(player1, red3_p1));
+        assertEquals(player2, game.currentPlayer());
+        assertNull(game.getWinner());
+
+        assertDoesNotThrow(() -> game.playCard(player2, blue3_p2));
+        assertEquals(player3, game.currentPlayer());
+        assertNull(game.getWinner());
+
+        assertDoesNotThrow(() -> game.playCard(player3, blue5_p3));
+        assertEquals(player1, game.currentPlayer());
+        assertNull(game.getWinner());
+    }
+
+    @Test
+    void testGameEndsWhenPlayerPlaysLastCardAndFurtherPlaysAreBlocked() {
+        Card red1 = new NumberCard("Red", 1);
+        Card red3_p1_wins = new NumberCard("Red", 3);
+
+        player1.giveCard(red3_p1_wins);
+        player2.giveCard(new NumberCard("Blue", 1));
+        game.setTopCard(red1);
+
+        assertDoesNotThrow(() -> game.playCard(player1, red3_p1_wins));
+
+        assertEquals(0, player1.handSize());
+        game.endGame(player1);
+        assertEquals(player1, game.getWinner());
+
+        Player nextPlayerAfterWin = player2;
+        Card bobCard = player2.getHand().getFirst();
+        assertEquals(nextPlayerAfterWin, game.getOrchestrator().getCurrent());
+
+        assertThrows(RuntimeException.class, () -> {game.playCard(nextPlayerAfterWin, bobCard);});
+    }
+
+    @Test
+    void testActionsAfterExplicitEndGame() {
+        game.endGame(player3);
+        assertEquals(player3, game.getWinner());
+
+        Card p1Card = new NumberCard("Red", 1);
+        player1.giveCard(p1Card);
+        game.setTopCard(new NumberCard("Red", 2));
+
+        assertThrows(RuntimeException.class, () -> {game.playCard(player1, p1Card);});
+    }
+}

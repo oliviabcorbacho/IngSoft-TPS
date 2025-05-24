@@ -22,7 +22,7 @@ public class ReverseCard extends Card {
 
     @Override
     protected boolean acceptsPlayedCard(ReverseCard playedCard) {
-        return playedCard.getColor().equals(this.color) || playedCard instanceof ReverseCard;
+        return true;
     }
 
     @Override

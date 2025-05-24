@@ -27,7 +27,7 @@ public class PlusTwoCard extends Card {
 
     @Override
     protected boolean acceptsPlayedCard(PlusTwoCard playedCard) {
-        return playedCard.getColor().equals(this.color) || playedCard instanceof PlusTwoCard;
+        return true;
     }
 
     @Override
