@@ -12,6 +12,7 @@ import org.udesa.tp4corbachosimian.service.UnoService;
 import java.util.List;
 import java.util.UUID;
 
+
 @Controller
 public class UnoController {
     @Autowired
@@ -22,8 +23,9 @@ public class UnoController {
     }
 
 //    @PostMapping("play/{matchId}/{player}") public ResponseEntity play( @PathVariable UUID matchId, @PathVariable String player, @RequestBody JsonCard card ) {}
-//    @PostMapping("draw/{matchId}/{player}") public ResponseEntity drawCard( @PathVariable UUID matchId, @RequestParam String player ) {}
+//    @PostMapping("draw/{matchId}/{player}") public ResponseEntity drawCard( @PathVariable UUID matchId, @PathVariable String player ) {}
 //    @GetMapping("activecard/{matchId}") public ResponseEntity activeCard( @PathVariable UUID matchId ) {}
+
     @GetMapping("playerhand/{matchId}") public ResponseEntity playerHand( @PathVariable UUID matchId ) {
         return ResponseEntity.ok( unoService.playerHand( matchId.stream().map(each -> each.asJson())));
     }

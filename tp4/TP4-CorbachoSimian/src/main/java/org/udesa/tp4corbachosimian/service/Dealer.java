@@ -17,6 +17,7 @@ public class Dealer {
         deck.addAll( cardsOn( "Yellow" ) ); //todas las amarillas
         deck.addAll( cardsOn( "Green" ) ); //todas las verdes
         // mezclar
+        deck.shuffle( );
         return deck;
     }
 

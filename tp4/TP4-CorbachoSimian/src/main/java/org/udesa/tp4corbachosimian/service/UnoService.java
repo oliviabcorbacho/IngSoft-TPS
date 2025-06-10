@@ -2,6 +2,7 @@ package org.udesa.tp4corbachosimian.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.udesa.tp4corbachosimian.model.Card;
 import org.udesa.tp4corbachosimian.model.Match;
 
 import java.util.HashMap;
@@ -20,5 +21,13 @@ public class UnoService {
         UUID newKey = UUID.randomUUID();
         sessions.put( newKey, Match.fullMatch( dealer.fullDeck(), players ));
         return newKey;
+    }
+
+    public List<Card> playerHand(UUID matchId) {
+        Match match = sessions.get(matchId);
+        if (match == null) {
+            throw new IllegalArgumentException("Match not found");
+        }
+        return match.playerHand();
     }
 }
