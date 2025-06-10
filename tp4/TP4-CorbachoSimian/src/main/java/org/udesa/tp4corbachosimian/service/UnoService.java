@@ -30,4 +30,28 @@ public class UnoService {
         }
         return match.playerHand();
     }
+
+    public Card activeCard(UUID matchId) {
+        Match match = sessions.get(matchId);
+        if (match == null) {
+            throw new IllegalArgumentException("Match not found");
+        }
+        return match.activeCard();
+    }
+
+    public void drawCard(UUID matchId, String player) {
+        Match match = sessions.get(matchId);
+        if (match == null) {
+            throw new IllegalArgumentException("Match not found");
+        }
+        match.drawCard(player);
+    }
+
+    public void play(UUID matchId, String player, Card card) {
+        Match match = sessions.get(matchId);
+        if (match == null) {
+            throw new IllegalArgumentException("Match not found");
+        }
+        match.play(player, card);
+    }
 }

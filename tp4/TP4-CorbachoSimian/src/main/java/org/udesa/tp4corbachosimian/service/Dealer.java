@@ -6,6 +6,7 @@ import org.udesa.tp4corbachosimian.model.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @Component
@@ -17,7 +18,7 @@ public class Dealer {
         deck.addAll( cardsOn( "Yellow" ) ); //todas las amarillas
         deck.addAll( cardsOn( "Green" ) ); //todas las verdes
         // mezclar
-        deck.shuffle( );
+        Collections.shuffle(deck);
         return deck;
     }
 
