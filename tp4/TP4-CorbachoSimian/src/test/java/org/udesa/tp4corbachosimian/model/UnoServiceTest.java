@@ -21,40 +21,12 @@ public class UnoServiceTest {
     private UUID validMatchId;
     private List<String> players;
 
-//    public static List<Card> fullDeck(){
-//        ArrayList<Card> deck = new ArrayList<>();
-//        deck.addAll( cardsOn( "Red" ) ); //todas las rojas
-//        deck.addAll( cardsOn( "Blue" ) ); //todas las azules
-//        deck.addAll( cardsOn( "Yellow" ) ); //todas las amarillas
-//        deck.addAll( cardsOn( "Green" ) ); //todas las verdes
-//        // mezclar
-//        Collections.shuffle(deck);
-//        return deck;
-//    }
-//
-//    private static List<Card> cardsOn(String color) {
-//        return List.of( new WildCard( ),
-//                new SkipCard( color ),
-//                new Draw2Card( color ),
-//                new ReverseCard( color ),
-//                new NumberCard( color, 1),
-//                new NumberCard( color, 2),
-//                new NumberCard( color, 3),
-//                new NumberCard( color, 4),
-//                new NumberCard( color, 5),
-//                new NumberCard( color, 6),
-//                new NumberCard( color, 7),
-//                new NumberCard( color, 8),
-//                new NumberCard( color, 9));
-//    }
-
     @BeforeEach
     void setUp() {
         players = List.of("Martina", "Alex");
         validMatchId = unoService.newMatch(players);
     }
 
-    // newMatch tests
     @Test 
     public void newMatchReturnsValidUUID() {
         UUID id = unoService.newMatch(List.of("Player1", "Player2"));
@@ -87,7 +59,6 @@ public class UnoServiceTest {
         });
     }
 
-    // playerHand tests
     @Test
     public void playerHandValidMatch() {
         List<Card> hand = unoService.playerHand(validMatchId);
@@ -123,7 +94,6 @@ public class UnoServiceTest {
         assertEquals(hand1.size(), hand2.size());
     }
 
-    // activeCard tests
     @Test
     public void activeCardValidMatch() {
         Card activeCard = unoService.activeCard(validMatchId);
@@ -159,7 +129,6 @@ public class UnoServiceTest {
         assertFalse(playerHand.contains(activeCard));
     }
 
-    // drawCard tests
     @Test
     public void drawCardValidMatch() {
         assertDoesNotThrow(() -> {
@@ -197,7 +166,6 @@ public class UnoServiceTest {
         assertEquals(initialSize + 1, newSize);
     }
 
-    // play tests
     @Test
     public void playInvalidMatch() {
         UUID invalidId = UUID.randomUUID();
@@ -247,12 +215,10 @@ public class UnoServiceTest {
                 unoService.play(validMatchId, "Martina", validCard);
             });
         } else {
-            // Skip test if no valid card found in initial hand
             assertTrue(true, "No valid card found in initial hand - test skipped");
         }
     }
 
-    // Additional basic integration tests
     @Test
     public void multipleMatchesAreIndependent() {
         UUID match1 = unoService.newMatch(List.of("Player1", "Player2"));
@@ -267,9 +233,9 @@ public class UnoServiceTest {
 
     @Test
     public void drawCardAfterPlay() {
-        // Draw a card first
+ 
         unoService.drawCard(validMatchId, "Martina");
         int handSizeAfterDraw = unoService.playerHand(validMatchId).size();
-        assertEquals(8, handSizeAfterDraw); // 7 initial + 1 drawn
+        assertEquals(8, handSizeAfterDraw);
     }
 }

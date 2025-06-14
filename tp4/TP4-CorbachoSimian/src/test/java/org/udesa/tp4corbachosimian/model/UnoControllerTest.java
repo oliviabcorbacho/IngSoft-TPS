@@ -4,7 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -22,7 +23,8 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(UnoController.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 public class UnoControllerTest {
     
     @Autowired
@@ -43,7 +45,6 @@ public class UnoControllerTest {
         validPlayer = "TestPlayer";
     }
 
-    // newMatch endpoint tests - POST /newmatch
     @Test
     public void newMatchReturnsUUID() throws Exception {
         UUID expectedId = UUID.randomUUID();
@@ -81,7 +82,6 @@ public class UnoControllerTest {
                 .andExpect(status().is(500));
     }
 
-    // play endpoint tests - POST /play/{matchId}/{player}
     @Test
     public void playValidCard() throws Exception {
         JsonCard jsonCard = new JsonCard();
@@ -111,7 +111,7 @@ public class UnoControllerTest {
         mockMvc.perform(post("/play/{matchId}/{player}", validMatchId, validPlayer)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(jsonCard)))
-                .andExpect(status().isBadRequest())
+                .andExpect(status().is(500))
                 .andExpect(content().string("Invalid move"));
     }
 
@@ -147,7 +147,6 @@ public class UnoControllerTest {
                 .andExpect(status().is(500));
     }
 
-    // drawCard endpoint tests - POST /draw/{matchId}/{player}
     @Test
     public void drawCardSuccess() throws Exception {
         mockMvc.perform(post("/draw/{matchId}/{player}", validMatchId, validPlayer))
@@ -162,7 +161,7 @@ public class UnoControllerTest {
                 .drawCard(any(UUID.class), anyString());
 
         mockMvc.perform(post("/draw/{matchId}/{player}", validMatchId, validPlayer))
-                .andExpect(status().isBadRequest())
+                .andExpect(status().isInternalServerError())
                 .andExpect(content().string("Player not found"));
     }
 
@@ -172,7 +171,6 @@ public class UnoControllerTest {
                 .andExpect(status().is(500));
     }
 
-    // activeCard endpoint tests - GET /activecard/{matchId}
     @Test
     public void activeCardSuccess() throws Exception {
         Card mockCard = new NumberCard("Red", 5);
@@ -190,7 +188,6 @@ public class UnoControllerTest {
                 .andExpect(status().is(500));
     }
 
-    // playerHand endpoint tests - GET /playerhand/{matchId}
     @Test
     public void playerHandSuccess() throws Exception {
         List<Card> mockHand = List.of(
@@ -219,7 +216,6 @@ public class UnoControllerTest {
                 .andExpect(status().is(500));
     }
 
-    // HTTP method validation tests
     @Test
     public void wrongHttpMethodForNewMatch() throws Exception {
         mockMvc.perform(get("/newmatch"))
@@ -250,7 +246,6 @@ public class UnoControllerTest {
                 .andExpect(status().isMethodNotAllowed());
     }
 
-    // Path variable validation tests
     @Test
     public void playWithEmptyPlayer() throws Exception {
         JsonCard jsonCard = new JsonCard();
