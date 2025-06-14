@@ -192,11 +192,11 @@ class GameTest {
     void testFullRoundOfPlayWithThreePlayersAndNoWinner() {
         Card red1 = new NumberCard("Red", 1);
         Card red3_p1 = new NumberCard("Red", 3);
-        Card yellow3_p1 = new NumberCard("Yellow", 3); // P1's second card
+        Card yellow3_p1 = new NumberCard("Yellow", 3);
         Card blue3_p2 = new NumberCard("Blue", 3);
-        Card green3_p2 = new NumberCard("Green", 3);   // P2's second card
+        Card green3_p2 = new NumberCard("Green", 3);
         Card blue5_p3 = new NumberCard("Blue", 5);
-        Card yellow5_p3 = new NumberCard("Yellow", 5); // P3's second card
+        Card yellow5_p3 = new NumberCard("Yellow", 5);
 
         player1.giveCard(red3_p1);
         player1.giveCard(yellow3_p1);

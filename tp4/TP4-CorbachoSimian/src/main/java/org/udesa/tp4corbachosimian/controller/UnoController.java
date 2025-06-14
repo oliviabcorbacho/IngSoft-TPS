@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 import org.udesa.tp4corbachosimian.model.JsonCard;
 import org.udesa.tp4corbachosimian.service.UnoService;
@@ -17,6 +18,11 @@ import java.util.UUID;
 public class UnoController {
     @Autowired
     UnoService unoService;
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<String> handleIlegalArgumentException(Exception e) {
+        return ResponseEntity.internalServerError().body( e.getMessage() );
+    }
 
     @PostMapping("newmatch") public ResponseEntity newMatch( @RequestParam List<String> players ) {
         return ResponseEntity.ok(unoService.newMatch( players ));
